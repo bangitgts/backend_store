@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
     const parseIp = (req) =>
     req.headers['x-forwarded-for']?.split(',').shift()
     || req.socket?.remoteAddress ; 
-    res.json(parseIp);
+    res.json(parseIp(req));
 });
 
 var server = app.listen(port, function() {
