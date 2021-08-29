@@ -30,6 +30,10 @@ const User = new Schema(
       type: String,
       default: "abc",
     },
+    address: {
+      type: String,
+      default: ""
+    },
     cart: {
       type: Array,
       default: [],
@@ -48,7 +52,7 @@ const User = new Schema(
     },
     isVerify: {
       type: String,
-      default: null,
+      default: 0, // 0 = chua verify, 1 = verify 
     }, //
     isResetpw: {
       type: String,

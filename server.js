@@ -6,9 +6,8 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const route = require("./app/routes");
-const dbConnect = require("./config/connectDb.js");
+const db = require("./config/connectDb.js");
 const port = process.env.PORT;
-
 //use cors
 app.use(cors());
 // parse application/x-www-form-urlencoded
@@ -17,15 +16,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // [USE] Morgan
 app.use(morgan("combined"));
-dbConnect.connect();
+db.connect();
 route(app);
 app.get("/", (req, res) => {
-    const parseIp = (req) =>
-    req.headers['x-forwarded-for']?.split(',').shift()
-    || req.socket?.remoteAddress ; 
-    const ip = parseIp(req);
-
-    res.json(ip.slice(7));
+  res.json("abc")
 });
 
 var server = app.listen(port, function() {
