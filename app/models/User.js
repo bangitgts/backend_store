@@ -28,7 +28,11 @@ const User = new Schema(
     },
     avatar: {
       type: String,
-      default: "abc",
+      default: "abc.png",
+    },
+    phoneNumber: {
+      type: String,
+      default: "",
     },
     address: {
       type: String,
@@ -54,7 +58,7 @@ const User = new Schema(
       type: Number,
       default: 0, // 0 = chua verify, 1 = verify 
     }, //
-    isResetpw: {
+    isTokenreset: {
       type: String,
       default: null,
     },

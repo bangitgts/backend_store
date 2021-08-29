@@ -1,6 +1,8 @@
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/User");
+const makeId = require("../function/makeId");
+const mailer = require("../utils/mailer");
 class UserController {
   async informationUser(req, res) {
     try {
@@ -123,15 +125,16 @@ class UserController {
   }
   async changePassword(req, res) {
     try {
-      let newpassword = req.body.password;
+      let password = req.body.password;
+      let newpassword = req.body.newpassword;
       const idUser = await User.findOne({ _id: req.user });
       if (newpassword >= 6) {
         idUser.password = md5(newpassword);
         return res.status(200).json({
-            message: "Password change successfully",
-            success: true,
-            status: 200,
-          });
+          message: "Password change successfully",
+          success: true,
+          status: 200,
+        });
       } else {
         return res.status(400).json({
           message: "Password is too short. Need to put more than 6 characters",
@@ -146,6 +149,89 @@ class UserController {
         status: 500,
       });
     }
+  }
+  async changeInformation(req, res) {
+    try {
+      let name = req.body.name;
+      let sex = req.body.sex;
+      let address = req.body.address;
+      let phoneNumber = req.body.phoneNumber;
+      let idUser = await UserModel.findOne({ _id: req.user });
+      idUser.name = name;
+      idUser.sex = sex;
+      idUser.address = address;
+      idUser.phoneNumber = phoneNumber;
+      return res.status(200).json({
+        message: "Change successfully",
+        success: true,
+        status: 200,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Server error",
+        success: false,
+        status: 500,
+      });
+    }
+  }
+  async sendMailver(req, res) {
+    try {
+      const data = await UserModel.findOne({ _id: req.user });
+      if (data.isVerify === 1) {
+        res.status(400).json({
+          message: "Your accoutn has been verified",
+          success: false,
+          status: 400,
+        });
+      } else {
+        const generateId = makeid(6);
+        data.isVerify = generateId;
+        const sub = "Verify Account - Shop Store";
+        const htmlContent = `<h3>Your verification code ${generateId} </h3>`;
+        mailer.sendMail(data.email, sub, htmlContent);
+        data.save();
+        res.status(200).json({
+          message: "Your email has been sent successfully",
+          success: true,
+          status: 200,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Server error",
+        success: false,
+        status: 500,
+      });
+    }
+  }
+  async verifyUser(req, res) {
+    try {
+      let verifyToken = req.body.verifyToken;
+      let data = await UserModel.findOne({ _id: req.user });
+      if (data.isVerify === 1) {
+        res.status(400).json({
+          message: "Your account has been verified",
+          success: false,
+          status: 400,
+        });
+      } else {
+        if (data.isVerify === verifyToken) {
+          data.isVerify = 1;
+          data.save();
+          res.status(200).json({
+            message: "Account activation successful",
+            success: true,
+            status: 200,
+          });
+        } else {
+          res.status(400).json({
+            message: "Invalid authentication code",
+            success: false,
+            status: 400,
+          });
+        }
+      }
+    } catch (error) {}
   }
 }
 

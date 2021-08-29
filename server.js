@@ -19,7 +19,7 @@ app.use(morgan("combined"));
 db.connect();
 route(app);
 app.get("/", (req, res) => {
-  res.json("abc")
+  res.json("abc");
 });
 
 var server = app.listen(port, function() {
