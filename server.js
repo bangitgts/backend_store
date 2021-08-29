@@ -19,11 +19,14 @@ app.use(morgan("combined"));
 dbConnect.connect();
 route(app);
 app.get("/", (req, res) => {
-    res.json("API");
+    const parseIp = (req) =>
+    req.headers['x-forwarded-for']?.split(',').shift()
+    || req.socket?.remoteAddress ; 
+    res.json(parseIp(req));
 });
 
 var server = app.listen(port, function() {
     var host = server.address().address
     var port = server.address().port
-    console.log("Example app listening at http://%s:%s", host, port)
+    console.log("Listening at http://%s:%s", host, port)
 });
