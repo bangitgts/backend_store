@@ -51,7 +51,7 @@ const User = new Schema(
       default: [],
     },
     isVerify: {
-      type: String,
+      type: Number,
       default: 0, // 0 = chua verify, 1 = verify 
     }, //
     isResetpw: {

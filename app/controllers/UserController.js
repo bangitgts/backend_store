@@ -121,6 +121,32 @@ class UserController {
       });
     }
   }
+  async changePassword(req, res) {
+    try {
+      let newpassword = req.body.password;
+      const idUser = await User.findOne({ _id: req.user });
+      if (newpassword >= 6) {
+        idUser.password = md5(newpassword);
+        return res.status(200).json({
+            message: "Password change successfully",
+            success: true,
+            status: 200,
+          });
+      } else {
+        return res.status(400).json({
+          message: "Password is too short. Need to put more than 6 characters",
+          success: false,
+          status: 400,
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        message: "Sever error",
+        success: false,
+        status: 500,
+      });
+    }
+  }
 }
 
 module.exports = new UserController();
