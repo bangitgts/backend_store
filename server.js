@@ -8,7 +8,6 @@ const cors = require("cors");
 const route = require("./app/routes");
 const dbConnect = require("./config/connectDb.js");
 const port = process.env.PORT;
-const publicIp = require('public-ip');
 
 //use cors
 app.use(cors());
@@ -24,7 +23,9 @@ app.get("/", (req, res) => {
     const parseIp = (req) =>
     req.headers['x-forwarded-for']?.split(',').shift()
     || req.socket?.remoteAddress ; 
-    res.json(parseIp(req));
+    const ip = parseIp(req);
+
+    res.json(ip.slice(7));
 });
 
 var server = app.listen(port, function() {
