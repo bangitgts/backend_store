@@ -184,7 +184,7 @@ class UserController {
           status: 400,
         });
       } else {
-        const generateId = makeid(6);
+        const generateId = makeId(6);
         data.isVerify = generateId;
         const sub = "Verify Account - Shop Store";
         const htmlContent = `<h3>Your verification code ${generateId} </h3>`;
@@ -219,13 +219,13 @@ class UserController {
           data.isVerify = 1;
           data.save();
           res.status(200).json({
-            message: "Account activation successful",
+            message: "Congratulations!!! The account has been verified",
             success: true,
             status: 200,
           });
         } else {
           res.status(400).json({
-            message: "Invalid authentication code",
+            message: "Verification code does not match",
             success: false,
             status: 400,
           });
@@ -235,7 +235,7 @@ class UserController {
   }
   async sendMailreset(req, res) {
     try {
-      const generateId = makeid(6);
+      const generateId = makeId(6);
       data.isTokenreset = generateId;
       const sub = "Reset Password - Shopstore";
       const htmlContent = `<h3>Mã xác nhận của quý khách là ${generateId} </h3>`;

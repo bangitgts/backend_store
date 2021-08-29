@@ -14,7 +14,7 @@ router.put("/changepassword", userController.changePassword);
 // [POST] Send Email Verification Email
 router.post("/sendmailverify", checkToken, userController.sendMailver);
 // [PUT] Change Information
-router.put("/changeinfor", checkToken, userController.changeInformation);
+router.put("/changeinformation", checkToken, userController.changeInformation);
 // [PUT] Verification
 router.put("/verifyaccount", checkToken, userController.verifyUser);
 // [POST] Send Email Reset Password
