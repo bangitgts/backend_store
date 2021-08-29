@@ -21,11 +21,10 @@ app.use(morgan("combined"));
 dbConnect.connect();
 route(app);
 app.get("/", (req, res) => {
-    // const parseIp = (req) =>
-    // req.headers['x-forwarded-for']?.split(',').shift()
-    // || req.socket?.remoteAddress ; 
-    // res.json(parseIp(req));
-    res.json(publicIp);
+    const parseIp = (req) =>
+    req.headers['x-forwarded-for']?.split(',').shift()
+    || req.socket?.remoteAddress ; 
+    res.json(parseIp(req));
 });
 
 var server = app.listen(port, function() {
