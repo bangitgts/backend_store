@@ -236,7 +236,7 @@ class UserController {
   async sendMailreset(req, res) {
     try {
       const generateId = makeid(6);
-      data.resetToken = generateId;
+      data.isTokenreset = generateId;
       const sub = "Reset Password - Shopstore";
       const htmlContent = `<h3>Mã xác nhận của quý khách là ${generateId} </h3>`;
       mailer.sendMail(req.body.email, sub, htmlContent);
@@ -255,7 +255,30 @@ class UserController {
     }
   }
   async newPassword(req, res) {
-      
+    try {
+      const email = req.params.email;
+      const newPassword = req.body.newPassword;
+      const md5newPassword = md5(newPassword);
+      const verifyToken = req.body.verifyToken;
+      let data = await UserModel.findOne({
+        email: email,
+        resetToken: verifyToken,
+      });
+      data.password = md5newPassword;
+      data.resetToken = null;
+      data.save();
+      res.status(200).json({
+          message: "Change password successfully",
+          success: true,
+          status: 200,
+      });
+    } catch (error) {
+      res.status(402).json({
+        message: "Invalid token ",
+        success: false,
+        status: 402,
+      });
+    }
   }
 }
 
