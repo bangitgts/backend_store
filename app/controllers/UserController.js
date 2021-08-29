@@ -95,7 +95,7 @@ class UserController {
         email: email,
         password: password,
       });
-      if (checkLogin) {
+      if (checkLogin !== null) {
         let token = jwt.sign(
           {
             exp: Math.floor(Date.now() / 1000) + 60 * 60,
@@ -114,12 +114,18 @@ class UserController {
           success: true,
           status: 200,
         });
+      } else {
+        return res.status(400).json({
+          message: "Loggin failed. Account or password does not match",
+          success: false,
+          status: 400,
+        });
       }
     } catch (error) {
-      return res.status(400).json({
-        message: "Loggin failed. Account or password does not match",
+      return res.status(500).json({
+        message: "Server Error",
         success: false,
-        status: 400,
+        status: 500,
       });
     }
   }
@@ -268,9 +274,9 @@ class UserController {
       data.resetToken = null;
       data.save();
       res.status(200).json({
-          message: "Change password successfully",
-          success: true,
-          status: 200,
+        message: "Change password successfully",
+        success: true,
+        status: 200,
       });
     } catch (error) {
       res.status(402).json({
