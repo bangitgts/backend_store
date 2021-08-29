@@ -134,16 +134,24 @@ class UserController {
       let password = req.body.password;
       let newpassword = req.body.newpassword;
       const idUser = await User.findOne({ _id: req.user });
-      if (newpassword >= 6) {
-        idUser.password = md5(newpassword);
-        return res.status(200).json({
-          message: "Password change successfully",
-          success: true,
-          status: 200,
-        });
+      if (md5(password) === idUser.password) {
+        if (newpassword >= 6) {
+          idUser.password = md5(newpassword);
+          return res.status(200).json({
+            message: "Password change successfully",
+            success: true,
+            status: 200,
+          });
+        } else {
+          return res.status(400).json({
+            message:"Password is too short. Need to put more than 6 characters",
+            success: false,
+            status: 400,
+          });
+        }
       } else {
         return res.status(400).json({
-          message: "Password is too short. Need to put more than 6 characters",
+          message: "Old password is incorrect",
           success: false,
           status: 400,
         });
