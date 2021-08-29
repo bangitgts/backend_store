@@ -170,11 +170,12 @@ class UserController {
       let sex = req.body.sex;
       let address = req.body.address;
       let phoneNumber = req.body.phoneNumber;
-      let idUser = await UserModel.findOne({ _id: req.user });
-      idUser.name = name;
-      idUser.sex = sex;
-      idUser.address = address;
-      idUser.phoneNumber = phoneNumber;
+      let data = await UserModel.findOne({ _id: req.user });
+      data.name = name;
+      data.sex = sex;
+      data.address = address;
+      data.phoneNumber = phoneNumber;
+      data.save();
       return res.status(200).json({
         message: "Change successfully",
         success: true,
