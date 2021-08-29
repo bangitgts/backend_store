@@ -8,6 +8,8 @@ const cors = require("cors");
 const route = require("./app/routes");
 const dbConnect = require("./config/connectDb.js");
 const port = process.env.PORT;
+const publicIp = require('public-ip');
+
 //use cors
 app.use(cors());
 // parse application/x-www-form-urlencoded
@@ -19,10 +21,11 @@ app.use(morgan("combined"));
 dbConnect.connect();
 route(app);
 app.get("/", (req, res) => {
-    const parseIp = (req) =>
-    req.headers['x-forwarded-for']?.split(',').shift()
-    || req.socket?.remoteAddress ; 
-    res.json(parseIp(req));
+    // const parseIp = (req) =>
+    // req.headers['x-forwarded-for']?.split(',').shift()
+    // || req.socket?.remoteAddress ; 
+    // res.json(parseIp(req));
+    res.json(publicIp);
 });
 
 var server = app.listen(port, function() {
