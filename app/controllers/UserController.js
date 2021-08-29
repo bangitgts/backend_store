@@ -233,6 +233,30 @@ class UserController {
       }
     } catch (error) {}
   }
+  async sendMailreset(req, res) {
+    try {
+      const generateId = makeid(6);
+      data.resetToken = generateId;
+      const sub = "Reset Password - Shopstore";
+      const htmlContent = `<h3>Mã xác nhận của quý khách là ${generateId} </h3>`;
+      mailer.sendMail(req.body.email, sub, htmlContent);
+      data.save();
+      res.status(200).json({
+        message: "Your email has been sent successfully",
+        success: true,
+        status: 200,
+      });
+    } catch (error) {
+      res.status(402).json({
+        message: "Can't search email in database",
+        success: false,
+        status: 402,
+      });
+    }
+  }
+  async newPassword(req, res) {
+      
+  }
 }
 
 module.exports = new UserController();
