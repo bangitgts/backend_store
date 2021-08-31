@@ -46,8 +46,7 @@ class UserController {
         if (!checkEmail) {
           if (password.length < 6) {
             return res.status(400).json({
-              message:
-                "Password is too short. Need to put more than 6 characters",
+              message: "Password is too short. Need to put more than 6 characters",
               status: 400,
               success: false,
             });
@@ -65,14 +64,14 @@ class UserController {
             });
           }
         } else {
-          res.status(400).json({
+          res.status(402).json({
             status: 400,
             success: false,
             message: "Input data email is incorrect.This email already exists",
           });
         }
       } else {
-        res.status(400).json({
+        res.status(403).json({
           status: 400,
           success: false,
           message: "Input data sex is incorrect",
@@ -143,14 +142,14 @@ class UserController {
             status: 200,
           });
         } else {
-          return res.status(400).json({
+          return res.status(403).json({
             message:"Password is too short. Need to put more than 6 characters",
             success: false,
             status: 400,
           });
         }
       } else {
-        return res.status(400).json({
+        return res.status(402).json({
           message: "Old password is incorrect",
           success: false,
           status: 400,
@@ -194,7 +193,7 @@ class UserController {
       const data = await UserModel.findOne({ _id: req.user });
       if (data.isVerify === 1) {
         res.status(400).json({
-          message: "Your accoutn has been verified",
+          message: "Your account has been verified",
           success: false,
           status: 400,
         });
@@ -265,7 +264,7 @@ class UserController {
       res.status(402).json({
         message: "Can't search email in database",
         success: false,
-        status: 402,
+        status: 402
       });
     }
   }
@@ -289,7 +288,7 @@ class UserController {
       });
     } catch (error) {
       res.status(402).json({
-        message: "Invalid token ",
+        message: "Invalid token",
         success: false,
         status: 402,
       });

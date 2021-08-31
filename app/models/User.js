@@ -6,7 +6,7 @@ const User = new Schema(
     name: {
       type: String,
       minLength: 10,
-      required: [true, "fullName required"],
+      required: [true, "Name required"],
     },
     email: {
       type: String,
@@ -53,6 +53,10 @@ const User = new Schema(
     liked: {
       type: Array,
       default: [],
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
     isVerify: {
       type: Number,
